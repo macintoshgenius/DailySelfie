@@ -1,14 +1,14 @@
 package willowcheng.postach.io.dailyselfie;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +28,19 @@ public class ItemListAdapter extends BaseAdapter {
 		return list.size();
 	}
 
+	public void addAllViews() {
+		for(File x:getFileList()){
+			
+		}
+	}
+	
+	private File[] getFileList() {
+		File storageDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		File[] fList = storageDir.listFiles();
+		return fList;
+	}
+	
 	public Object getItem(int position) {
 		return list.get(position);
 	}
@@ -60,6 +73,8 @@ public class ItemListAdapter extends BaseAdapter {
 		return newView;
 	}
 
+	
+	
 	static class ViewHolder {
 
 		ImageView picture;

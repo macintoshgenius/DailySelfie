@@ -6,17 +6,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.app.AlarmManager;
 import android.app.ListActivity;
+import android.app.PendingIntent;
 
 public class ItemListActivity extends ListActivity {
 
@@ -26,6 +28,12 @@ public class ItemListActivity extends ListActivity {
 
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	static final String TAG = "Daily Selfie";
+	
+	private PendingIntent mNotificationReceiverPendingIntent;
+    private Intent mNotificationReceiverIntent;
+    
+    private static final long INITIAL_ALARM_DELAY = 2 * 60 * 1000L;
+    private static final long REPEAT_ALARM_DELAY = 2 * 60 * 1000L;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +41,47 @@ public class ItemListActivity extends ListActivity {
 
 		mAdapter = new ItemListAdapter(getApplicationContext());
 		getListView().setAdapter(mAdapter);
-	}
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ItemRecord s = (ItemRecord) mAdapter.getItem(position);
+                showBigPicture(s.getUri());
+            }});
+
+        setupAlarm();
+	}
+	
+	private void setupAlarm()
+    {
+        mNotificationReceiverIntent = new Intent(ItemListActivity.this,
+                AlarmNotificationReceiver.class);
+
+        mNotificationReceiverPendingIntent = PendingIntent.getBroadcast(
+                ItemListActivity.this, 0, mNotificationReceiverIntent, 0);
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.setRepeating(AlarmManager.ELAPSED_REALTIME,
+                SystemClock.elapsedRealtime() + INITIAL_ALARM_DELAY,
+                REPEAT_ALARM_DELAY,
+                mNotificationReceiverPendingIntent);
+    }
+
+    private void cancelAlarm()
+    {
+        if (null==mNotificationReceiverPendingIntent)
+            return;
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        am.cancel(mNotificationReceiverPendingIntent);
+    }
+
+	private void showBigPicture(String imageUri) {
+		Intent intent = new Intent();
+		intent.setAction(android.content.Intent.ACTION_VIEW);
+		intent.setDataAndType(Uri.parse(imageUri), "image/jpg");
+		startActivity(intent);
+	}
+	
 	private void dispatchTakePictureIntent() {
 		Log.i(TAG, "Create Picture Intent");
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -64,7 +111,7 @@ public class ItemListActivity extends ListActivity {
 			galleryAddPic();
 			Log.i(TAG, "Item recorded");
 			mAdapter.add(new ItemRecord(mCurrentPhotoPath,
-					new SimpleDateFormat("yyyy-MM-d").format(new Date())));
+					new SimpleDateFormat("yyyy-MM-d_HH:mm").format(new Date())));
 
 		}
 	}
@@ -103,21 +150,20 @@ public class ItemListActivity extends ListActivity {
 	// }
 
 	private File createImageFile() throws IOException {
-		Log.i(TAG, "Create Image File");
+
 		// Create an image file name
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
 				.format(new Date());
-		Log.i(TAG, "TimeStamp: " + timeStamp);
+
 		String imageFileName = "JPEG_" + timeStamp + "_";
-		Log.i(TAG, "imageFileName: " + imageFileName);
+
 		File storageDir = Environment
 				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		Log.i(TAG, "storageDir: " + storageDir);
+
 		File image = File.createTempFile(imageFileName, /* prefix */
 				".jpg", /* suffix */
 				storageDir /* directory */
 		);
-		Log.i(TAG, "imagePath: " + image.getPath());
 
 		// Save a file: path for use with ACTION_VIEW intents
 		mCurrentPhotoPath = "file:" + image.getAbsolutePath();
@@ -138,6 +184,8 @@ public class ItemListActivity extends ListActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_camera) {
 			dispatchTakePictureIntent();
+		} else if (id == R.id.delete_all) {
+			mAdapter.removeAllViews();
 		}
 		return super.onOptionsItemSelected(item);
 	}

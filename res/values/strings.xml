@@ -8,5 +8,7 @@
     <string name="title_activity_item_list_adapter">ItemListAdapter</string>
     <string name="title_activity_item_record">ItemRecord</string>
     <string name="delete_all">Delete All</string>
+    <string name="title_activity_alarm_notification_receiver">AlarmNotificationReceiver</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

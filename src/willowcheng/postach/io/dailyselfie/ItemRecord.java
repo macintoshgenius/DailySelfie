@@ -13,6 +13,8 @@ public class ItemRecord {
 	private Bitmap mPictureBitmap;
 	private String mDate;
 
+	private String Uri;
+
 	public ItemRecord(Bitmap pictureBitmap, String date) {
 		this.mPictureBitmap = pictureBitmap;
 		this.mDate = date;
@@ -23,6 +25,7 @@ public class ItemRecord {
 	}
 
 	public ItemRecord(String url, String date) {
+
 		Bitmap bm = null;
 		InputStream is = null;
 		BufferedInputStream bis = null;
@@ -52,6 +55,7 @@ public class ItemRecord {
 		}
 		this.mPictureBitmap = bm;
 		this.mDate = date;
+		this.Uri = url;
 	}
 
 	public ItemRecord() {
@@ -59,6 +63,7 @@ public class ItemRecord {
 	}
 
 	public Bitmap getPicture() {
+
 		return mPictureBitmap;
 	}
 
@@ -66,6 +71,10 @@ public class ItemRecord {
 		this.mPictureBitmap = pictureBitmap;
 	}
 
+	public String getUri() {
+		return Uri;
+	}
+	
 	public String getDate() {
 		return mDate;
 	}

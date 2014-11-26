@@ -10,7 +10,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-sdk
-        android:minSdkVersion="15"
+        android:minSdkVersion="16"
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -35,6 +35,8 @@
             android:name=".ItemDetailActivity"
             android:label="@string/title_item_detail" >
         </activity>
+
+        <receiver android:name=".AlarmNotificationReceiver" />
     </application>
 
 </manifest>
