@@ -26,11 +26,11 @@ public final class R {
         public static final int ic_menu_camera=0x7f020001;
     }
     public static final class id {
-        public static final int action_camera=0x7f080003;
-        public static final int date=0x7f080002;
-        public static final int delete_all=0x7f080004;
+        public static final int action_camera=0x7f080004;
+        public static final int date=0x7f080003;
+        public static final int detail=0x7f080001;
         public static final int item_detail_container=0x7f080000;
-        public static final int picture=0x7f080001;
+        public static final int picture=0x7f080002;
     }
     public static final class layout {
         public static final int activity_item_detail=0x7f030000;

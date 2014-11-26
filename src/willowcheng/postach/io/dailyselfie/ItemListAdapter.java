@@ -3,9 +3,12 @@ package willowcheng.postach.io.dailyselfie;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,7 +49,7 @@ public class ItemListAdapter extends BaseAdapter {
 			holder.picture = (ImageView) newView.findViewById(R.id.picture);
 			holder.date = (TextView) newView.findViewById(R.id.date);
 			newView.setTag(holder);
-			
+
 		} else {
 			holder = (ViewHolder) newView.getTag();
 		}
@@ -56,26 +59,26 @@ public class ItemListAdapter extends BaseAdapter {
 
 		return newView;
 	}
-	
+
 	static class ViewHolder {
-	
+
 		ImageView picture;
 		TextView date;
-		
+
 	}
-	
 
 	public void add(ItemRecord listItem) {
 		list.add(listItem);
 		notifyDataSetChanged();
 	}
-	
-	public ArrayList<ItemRecord> getList(){
+
+	public ArrayList<ItemRecord> getList() {
 		return list;
 	}
-	
-	public void removeAllViews(){
+
+	public void removeAllViews() {
 		list.clear();
 		this.notifyDataSetChanged();
 	}
+
 }
