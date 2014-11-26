@@ -1,7 +1,9 @@
 package willowcheng.postach.io.dailyselfie;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.app.Activity;
@@ -29,6 +31,10 @@ public class ItemListActivity extends Activity implements
 	 * device.
 	 */
 	private boolean mTwoPane;
+	
+	ItemListAdapter mAdapter;
+
+	static final int REQUEST_IMAGE_CAPTURE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +61,29 @@ public class ItemListActivity extends Activity implements
 	 * Callback method from {@link ItemListFragment.Callbacks} indicating that
 	 * the item with the given ID was selected.
 	 */
+
+	private void dispatchTakePictureIntent() {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+			startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+		}
+	}
+
 	@Override
-	public void onItemSelected(String id) {
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+			Bundle extras = data.getExtras();
+			Bitmap imageBitmap = (Bitmap) extras.get("data");
+			String date = (String) extras.get("date");
+			ItemRecord item = new ItemRecord(imageBitmap, date);
+			item.setPicture(imageBitmap);
+			mAdapter.add(item);
+			
+		}
+	}
+	
+	@Override
+	public void onItemSelected(Bitmap id) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -76,7 +103,7 @@ public class ItemListActivity extends Activity implements
 			startActivity(detailIntent);
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -91,7 +118,7 @@ public class ItemListActivity extends Activity implements
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_camera) {
-			return true;
+			dispatchTakePictureIntent();
 		}
 		return super.onOptionsItemSelected(item);
 	}

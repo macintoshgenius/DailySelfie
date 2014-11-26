@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	
-    <string name="hello_world">Hello!</string>
+
     <string name="app_name">Daily Selfie</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="action_settings">Settings</string>
     <string name="action_camera">Take Picture</string>
+    <string name="title_activity_item_list_adapter">ItemListAdapter</string>
+    <string name="title_activity_item_record">ItemRecord</string>
+    <string name="delete_all">Delete All</string>
 
 </resources>

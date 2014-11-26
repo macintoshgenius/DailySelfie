@@ -3,11 +3,10 @@ package willowcheng.postach.io.dailyselfie;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.ListFragment;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import willowcheng.postach.io.dailyselfie.dummy.DummyContent;
 
 /**
  * A list fragment representing a list of Items. This fragment also supports
@@ -19,6 +18,8 @@ import willowcheng.postach.io.dailyselfie.dummy.DummyContent;
  * interface.
  */
 public class ItemListFragment extends ListFragment {
+	
+	ItemListAdapter mAdapter;
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -46,7 +47,7 @@ public class ItemListFragment extends ListFragment {
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id);
+		public void onItemSelected(Bitmap bitmap);
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class ItemListFragment extends ListFragment {
 	 */
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(String id) {
+		public void onItemSelected(Bitmap bitmap) {
 		}
 	};
 
@@ -71,9 +72,8 @@ public class ItemListFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 
 		// TODO: replace with a real list adapter.
-		setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-				android.R.layout.simple_list_item_activated_1,
-				android.R.id.text1, DummyContent.ITEMS));
+		mAdapter = new ItemListAdapter(getActivity());
+		setListAdapter(mAdapter);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class ItemListFragment extends ListFragment {
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+		mCallbacks.onItemSelected(ItemRecord.getPicture());
 	}
 
 	@Override
