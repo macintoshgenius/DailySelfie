@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 
 
 public class ItemRecord {
-	private static Bitmap mPictureBitmap;
+	private Bitmap mPictureBitmap;
 	private String mDate;
 
 	public ItemRecord(Bitmap pictureBitmap, String date) {
@@ -12,11 +12,15 @@ public class ItemRecord {
 		this.mDate = date;
 	}
 	
+	public ItemRecord(Bitmap pictureBitmap) {
+		this.mPictureBitmap = pictureBitmap;
+	}
+	
 	public ItemRecord() {
 		
 	}
 
-	public static Bitmap getPicture() {
+	public Bitmap getPicture() {
 		return mPictureBitmap;
 	}
 
@@ -32,10 +36,4 @@ public class ItemRecord {
 		this.mDate = date;
 	}
 
-	@Override
-	public String toString() {
-		// TODO
-		//return "Place: " + mPlaceName + " Country: " + mCountryName;
-		return " ";
-	}
 }
