@@ -28,18 +28,18 @@ public class ItemListAdapter extends BaseAdapter {
 		return list.size();
 	}
 
-	public void addAllViews() {
-		for(File x:getFileList()){
-			
-		}
-	}
-	
-	private File[] getFileList() {
-		File storageDir = Environment
-				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-		File[] fList = storageDir.listFiles();
-		return fList;
-	}
+//	public void addAllViews() {
+//		for(File x:getFileList()){
+//			
+//		}
+//	}
+//	
+//	private File[] getFileList() {
+//		File storageDir = Environment
+//				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//		File[] fList = storageDir.listFiles();
+//		return fList;
+//	}
 	
 	public Object getItem(int position) {
 		return list.get(position);

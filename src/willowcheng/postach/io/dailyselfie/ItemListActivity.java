@@ -28,12 +28,12 @@ public class ItemListActivity extends ListActivity {
 
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	static final String TAG = "Daily Selfie";
-	
+
 	private PendingIntent mNotificationReceiverPendingIntent;
-    private Intent mNotificationReceiverIntent;
-    
-    private static final long INITIAL_ALARM_DELAY = 2 * 60 * 1000L;
-    private static final long REPEAT_ALARM_DELAY = 2 * 60 * 1000L;
+	private Intent mNotificationReceiverIntent;
+
+	private static final long INITIAL_ALARM_DELAY = 2 * 60 * 1000L;
+	private static final long REPEAT_ALARM_DELAY = 2 * 60 * 1000L;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,47 +41,49 @@ public class ItemListActivity extends ListActivity {
 
 		mAdapter = new ItemListAdapter(getApplicationContext());
 		getListView().setAdapter(mAdapter);
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener(){
+		getListView().setOnItemClickListener(
+				new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ItemRecord s = (ItemRecord) mAdapter.getItem(position);
-                showBigPicture(s.getUri());
-            }});
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						ItemRecord s = (ItemRecord) mAdapter.getItem(position);
+						showBigPicture(s.getUri());
+					}
+				});
 
-        setupAlarm();
+		setupAlarm();
 	}
-	
-	private void setupAlarm()
-    {
-        mNotificationReceiverIntent = new Intent(ItemListActivity.this,
-                AlarmNotificationReceiver.class);
 
-        mNotificationReceiverPendingIntent = PendingIntent.getBroadcast(
-                ItemListActivity.this, 0, mNotificationReceiverIntent, 0);
+	private void setupAlarm() {
+		mNotificationReceiverIntent = new Intent(ItemListActivity.this,
+				AlarmNotificationReceiver.class);
 
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        am.setRepeating(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + INITIAL_ALARM_DELAY,
-                REPEAT_ALARM_DELAY,
-                mNotificationReceiverPendingIntent);
-    }
+		mNotificationReceiverPendingIntent = PendingIntent.getBroadcast(
+				ItemListActivity.this, 0, mNotificationReceiverIntent, 0);
 
-    private void cancelAlarm()
-    {
-        if (null==mNotificationReceiverPendingIntent)
-            return;
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        am.cancel(mNotificationReceiverPendingIntent);
-    }
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.setRepeating(AlarmManager.ELAPSED_REALTIME,
+				SystemClock.elapsedRealtime() + INITIAL_ALARM_DELAY,
+				REPEAT_ALARM_DELAY, mNotificationReceiverPendingIntent);
+	}
+
+	private void cancelAlarm() {
+		if (null == mNotificationReceiverPendingIntent)
+			return;
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		am.cancel(mNotificationReceiverPendingIntent);
+	}
 
 	private void showBigPicture(String imageUri) {
 		Intent intent = new Intent();
-		intent.setAction(android.content.Intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.parse(imageUri), "image/jpg");
+		//intent.setAction(android.content.Intent.ACTION_SEND);
+		intent.setClass(ItemListActivity.this, ItemDetailActivity.class);
+		intent.setData(Uri.parse(imageUri));
+		//intent.setDataAndType(Uri.parse(imageUri), "image/jpg");
 		startActivity(intent);
 	}
-	
+
 	private void dispatchTakePictureIntent() {
 		Log.i(TAG, "Create Picture Intent");
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
