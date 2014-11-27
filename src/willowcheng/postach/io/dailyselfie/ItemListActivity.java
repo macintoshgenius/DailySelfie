@@ -134,7 +134,7 @@ public class ItemListActivity extends ListActivity {
 	private File createImageFile() throws IOException {
 
 		// Create an image file name
-		String timeStamp = new SimpleDateFormat("yyyy-MM-d_HH:mm")
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
 				.format(new Date());
 
 		String imageFileName = "JPEG_" + timeStamp + "_";
