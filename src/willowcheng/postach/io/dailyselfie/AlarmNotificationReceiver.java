@@ -36,8 +36,8 @@ public class AlarmNotificationReceiver  extends BroadcastReceiver {
         // Build the Notification
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Notification.Builder notificationBuilder = new Notification.Builder(context)
-                .setTicker("Time for pic")
-                .setSmallIcon(android.R.drawable.stat_sys_warning)
+                .setTicker("Time for taking a picture")
+                .setSmallIcon(R.drawable.ic_launcher)
                 .setAutoCancel(true).setContentTitle("Time to take a selfie!")
                 .setContentText("click to open DailySelfie, be happy")
                 .setContentIntent(mContentIntent)

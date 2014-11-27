@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,19 +30,6 @@ public class ItemListAdapter extends BaseAdapter {
 		return list.size();
 	}
 
-//	public void addAllViews() {
-//		for(File x:getFileList()){
-//			
-//		}
-//	}
-//	
-//	private File[] getFileList() {
-//		File storageDir = Environment
-//				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-//		File[] fList = storageDir.listFiles();
-//		return fList;
-//	}
-	
 	public Object getItem(int position) {
 		return list.get(position);
 	}
@@ -73,8 +62,6 @@ public class ItemListAdapter extends BaseAdapter {
 		return newView;
 	}
 
-	
-	
 	static class ViewHolder {
 
 		ImageView picture;
@@ -93,6 +80,13 @@ public class ItemListAdapter extends BaseAdapter {
 
 	public void removeAllViews() {
 		list.clear();
+		File storageDir = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		for (File f : storageDir.listFiles()) {
+			if (f.isFile()) {
+				f.delete();
+			}
+		}
 		this.notifyDataSetChanged();
 	}
 

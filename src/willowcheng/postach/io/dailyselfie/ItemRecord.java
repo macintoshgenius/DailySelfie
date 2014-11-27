@@ -8,12 +8,15 @@ import java.net.URLConnection;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 public class ItemRecord {
 	private Bitmap mPictureBitmap;
 	private String mDate;
 
 	private String Uri;
+	
+	static final String TAG = "ItemRecord";
 
 	public ItemRecord(Bitmap pictureBitmap, String date) {
 		this.mPictureBitmap = pictureBitmap;
@@ -57,6 +60,7 @@ public class ItemRecord {
 		this.mDate = date;
 		this.Uri = url;
 	}
+	
 
 	public ItemRecord() {
 
