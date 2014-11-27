@@ -8,7 +8,6 @@ import java.net.URLConnection;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 public class ItemRecord {
 	private Bitmap mPictureBitmap;
@@ -62,9 +61,6 @@ public class ItemRecord {
 	}
 	
 
-	public ItemRecord() {
-
-	}
 
 	public Bitmap getPicture() {
 
