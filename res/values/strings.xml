@@ -10,5 +10,7 @@
     <string name="delete_all">Delete All</string>
     <string name="title_activity_alarm_notification_receiver">AlarmNotificationReceiver</string>
     <string name="hello_world">Hello world!</string>
+    <string name="cancel_alarm">Cancel Alarm</string>
+    <string name="start_alarm">Start Alarm</string>
 
 </resources>

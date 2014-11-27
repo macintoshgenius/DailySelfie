@@ -3,9 +3,7 @@ package willowcheng.postach.io.dailyselfie;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.app.AlarmManager;
 import android.app.ListActivity;
 import android.app.PendingIntent;
@@ -51,8 +50,9 @@ public class ItemListActivity extends ListActivity {
 				Log.i(TAG, f.getAbsolutePath());
 				Date lastModDate = new Date(f.lastModified());
 				String timeStamp = new SimpleDateFormat("yyyy-MM-d_HH:mm")
-				.format(lastModDate);
-				mAdapter.add(new ItemRecord("file:" + f.getAbsolutePath(), timeStamp.toString()));
+						.format(lastModDate);
+				mAdapter.add(new ItemRecord("file:" + f.getAbsolutePath(),
+						timeStamp.toString()));
 			}
 		}
 		getListView().setOnItemClickListener(
@@ -124,7 +124,8 @@ public class ItemListActivity extends ListActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.i(TAG, "On Activity Result");
 		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-			Log.i(TAG, "Item recorded and currentPhotoPath is" + mCurrentPhotoPath);
+			Log.i(TAG, "Item recorded and currentPhotoPath is"
+					+ mCurrentPhotoPath);
 			mAdapter.add(new ItemRecord(mCurrentPhotoPath,
 					new SimpleDateFormat("yyyy-MM-d_HH:mm").format(new Date())));
 
@@ -146,12 +147,11 @@ public class ItemListActivity extends ListActivity {
 				storageDir /* directory */
 		);
 
-		// Save a file: path for use with ACTION_VIEW intents
 		mCurrentPhotoPath = "file:" + image.getAbsolutePath();
 		Log.i(TAG, "mCurrentPhotoPath: " + mCurrentPhotoPath);
 		return image;
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -163,11 +163,28 @@ public class ItemListActivity extends ListActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		int id = item.getItemId();
-		if (id == R.id.delete_all) {
+		switch (id) {
+		case R.id.delete_all:
 			mAdapter.removeAllViews();
-		} else if (id == R.id.action_camera) {
+			Toast.makeText(ItemListActivity.this,
+					"All pictures have been deleted", Toast.LENGTH_SHORT)
+					.show();
+			break;
+		case R.id.action_camera:
 			dispatchTakePictureIntent();
+			break;
+		case R.id.cancel_alarm:
+			cancelAlarm();
+			Toast.makeText(ItemListActivity.this,
+					"Your alarm is cancelled", Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.start_alarm:
+			setupAlarm();
+			Toast.makeText(ItemListActivity.this,
+					"Your alarm is set up", Toast.LENGTH_SHORT).show();
+			break;
 		}
+
 		return super.onOptionsItemSelected(item);
 	}
 

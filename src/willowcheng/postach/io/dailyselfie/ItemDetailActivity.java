@@ -9,7 +9,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.ImageView;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 
 /**
@@ -34,7 +33,8 @@ public class ItemDetailActivity extends Activity {
 		if (imageUri != null) {
 			ImageView mImageView = (ImageView) findViewById(R.id.detail);
 			try {
-				mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+				mBitmap = MediaStore.Images.Media.getBitmap(
+						getContentResolver(), imageUri);
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
